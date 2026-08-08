@@ -11,7 +11,11 @@ body{font-family:'Inter',sans-serif;background:var(--wh);color:var(--bk);overflo
 .hdr{position:fixed;top:0;left:0;right:0;z-index:500;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:1px solid #f0f0f0}
 .hbtn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px}
 .hbtn span{display:block;width:22px;height:1px;background:var(--bk)}
-.logo{font-family:'EB Garamond',serif;font-size:15px;letter-spacing:6px;text-transform:uppercase;color:var(--bk);text-decoration:none;position:absolute;left:50%;transform:translateX(-50%)}
+.logo{display:flex;flex-direction:column;align-items:center;text-decoration:none;gap:2px;line-height:1}
+.logo-bear{font-size:2rem;line-height:1;display:block;text-align:center}
+.logo-bentley{font-family:'EB Garamond',Georgia,serif;font-size:1.3rem;font-weight:700;letter-spacing:.25em;color:#111;text-transform:uppercase;display:block;text-align:center}
+.logo-kids{font-family:'EB Garamond',Georgia,serif;font-size:.75rem;font-weight:600;letter-spacing:.2em;color:#111;display:flex;align-items:center;gap:6px;text-transform:uppercase}
+.logo-dash{font-size:.8rem;color:#111}
 .logo em{font-style:italic;color:var(--gd)}
 .hright{display:flex;align-items:center;gap:12px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gy)}
 #hdr-likes{color:var(--lk)}
@@ -132,7 +136,7 @@ footer{padding:32px 20px;border-top:1px solid #f0f0f0;display:flex;justify-conte
 <body>
 <header class="hdr">
   <button class="hbtn" id="menu-btn"><span></span><span></span></button>
-  <a class="logo" href="#">BENTLEY<em>KIDS</em></a>
+  <a class="logo" href="#"><span class="logo-bear">🐻</span><span class="logo-bentley">BENTLEY</span><span class="logo-kids"><span class="logo-dash">—</span> KIDS <span class="logo-dash">—</span></span></a>
   <div class="hright"><span id="hdr-likes"></span><span id="hdr-total"></span></div>
 </header>
 <div class="mode-bar">
