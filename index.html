@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bentley Kids · Trend Board</title>
+<style>
+:root{color-scheme:light;--gold:#c8a96e;--black:#0a0a0a;--cream:#f8f7f4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Helvetica Neue',Arial,sans-serif;background:var(--black);color:#fff}
+.header{position:sticky;top:0;z-index:200;background:rgba(10,10,10,.96);backdrop-filter:blur(12px);border-bottom:1px solid #1a1a1a;display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:54px}
+.logo{font-size:13px;font-weight:900;letter-spacing:5px;color:#fff}
+.logo b{color:var(--gold)}
+.total-badge{background:#1a1a1a;border:1px solid #2a2a2a;color:var(--gold);font-size:10px;font-weight:700;letter-spacing:1px;padding:5px 14px;border-radius:20px}
+.filters{background:#111;border-bottom:1px solid #1a1a1a;padding:0 28px;display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.fbtn{background:none;border:none;border-bottom:2px solid transparent;padding:14px 16px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#555;cursor:pointer;white-space:nowrap;transition:all .2s}
+.fbtn:hover{color:#aaa}
+.fbtn.on{color:var(--gold);border-bottom-color:var(--gold)}
+.f-sep{width:1px;height:20px;background:#222;margin:0 8px;flex-shrink:0}
+.ubtn{background:none;border:1px solid #222;border-radius:20px;padding:5px 14px;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:#555;transition:all .2s;flex-shrink:0}
+.ubtn.on{background:var(--gold);border-color:var(--gold);color:#000}
+.date-section{padding:36px 28px 16px}
+.date-label{font-size:10px;font-weight:800;letter-spacing:4px;color:#333;text-transform:uppercase;display:flex;align-items:center;gap:14px}
+.date-label span{color:var(--gold)}
+.date-label::after{content:'';flex:1;height:1px;background:#1a1a1a}
+.new-pill{background:var(--gold);color:#000;font-size:8px;font-weight:900;letter-spacing:2px;padding:2px 10px;border-radius:20px;text-transform:uppercase}
+.brand-info{color:#444;font-size:11px;margin-top:8px}
+.photo-grid{padding:0 28px 20px;columns:4 220px;column-gap:10px}
+@media(max-width:900px){.photo-grid{columns:2 180px}}
+@media(max-width:500px){.photo-grid{columns:2 140px}}
+.photo-card{break-inside:avoid;position:relative;margin-bottom:10px;border-radius:6px;overflow:hidden;cursor:pointer;background:#111;transition:transform .3s}
+.photo-card:hover{transform:scale(1.015);z-index:10}
+.photo-card img{width:100%;display:block;object-fit:cover;min-height:180px;max-height:480px}
+.photo-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.88) 0%,rgba(0,0,0,0) 50%);opacity:0;transition:opacity .3s;display:flex;flex-direction:column;justify-content:flex-end;padding:16px}
+.photo-card:hover .photo-overlay{opacity:1}
+.ov-chip{display:inline-block;font-size:8px;font-weight:800;letter-spacing:1px;padding:2px 8px;border-radius:20px;color:#fff;text-transform:uppercase;margin-bottom:7px;align-self:flex-start}
+.chip-alta{background:var(--gold);color:#000}
+.chip-media{background:#5a8a6a}
+.chip-baja{background:#555}
+.ov-name{font-size:14px;font-weight:900;color:#fff;line-height:1.2}
+.ov-cat{font-size:9px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;margin-top:3px}
+.ov-actions{display:flex;gap:8px;margin-top:12px}
+.ov-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;padding:6px 12px;border-radius:4px;cursor:pointer;text-transform:uppercase;text-decoration:none;transition:background .2s}
+.ov-btn:hover{background:rgba(255,255,255,.25)}
+.ov-btn.dl{background:var(--gold);border-color:var(--gold);color:#000}
+.source-badge{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);color:#fff;font-size:8px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:20px;text-transform:uppercase}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:300;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex}
+.modal{background:#111;border:1px solid #222;border-radius:8px;max-width:900px;width:100%;max-height:92vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+@media(max-width:700px){.modal{grid-template-columns:1fr}}
+.modal-img-wrap{background:#000;overflow:hidden}
+.modal-img-wrap img{width:100%;height:100%;object-fit:contain;display:block;max-height:60vh}
+.modal-body{padding:32px;overflow-y:auto}
+.modal-close{float:right;background:none;border:none;color:#555;font-size:22px;cursor:pointer}
+.modal-code{font-size:9px;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:6px}
+.modal-name{font-size:22px;font-weight:900;color:#fff;margin-bottom:4px}
+.modal-brand{font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
+.modal-cat{display:inline-block;border:1px solid #2a2a2a;color:#888;font-size:9px;letter-spacing:1px;padding:4px 12px;border-radius:20px;text-transform:uppercase;margin-bottom:16px}
+.modal-desc{font-size:13px;color:#888;line-height:1.9;margin-bottom:24px}
+.modal-source{font-size:11px;color:#555;margin-bottom:20px}
+.modal-source a{color:var(--gold);text-decoration:none}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap}
+.m-btn{border:1px solid #2a2a2a;color:#888;font-size:10px;font-weight:700;letter-spacing:1px;padding:10px 18px;border-radius:4px;cursor:pointer;text-transform:uppercase;text-decoration:none;background:none;transition:all .2s}
+.m-btn:hover{border-color:#555;color:#fff}
+.m-btn.gold{background:var(--gold);border-color:var(--gold);color:#000}
+footer{border-top:1px solid #1a1a1a;padding:24px 28px;display:flex;justify-content:space-between;align-items:center;color:#333;font-size:10px;letter-spacing:1px;margin-top:40px}
+.empty{padding:80px;text-align:center;color:#333;font-size:13px}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="logo">BENTLEY<b>KIDS</b><span style="color:#333;font-size:10px;font-weight:400;letter-spacing:2px;margin-left:8px">TREND BOARD</span></div>
+  <div><span class="total-badge" id="total-badge">0 referencias</span></div>
+</header>
+<nav class="filters">
+  <button class="fbtn on" data-cat="all">Todo</button>
+  <button class="fbtn" data-cat="Chaquetas">Chaquetas</button>
+  <button class="fbtn" data-cat="Buzos">Buzos</button>
+  <button class="fbtn" data-cat="Camisetas">Camisetas</button>
+  <button class="fbtn" data-cat="Conjuntos">Conjuntos</button>
+  <button class="fbtn" data-cat="Pantalones">Pantalones</button>
+  <button class="fbtn" data-cat="Abrigos">Abrigos</button>
+  <button class="fbtn" data-cat="Vestidos">Vestidos</button>
+  <button class="fbtn" data-cat="Blusas">Blusas</button>
+  <div class="f-sep"></div>
+  <button class="ubtn on" data-u="all">Todas</button>
+  <button class="ubtn" data-u="Alta">Alta</button>
+  <button class="ubtn" data-u="Media">Media</button>
+</nav>
+<div id="board"></div>
+<div class="modal-bg" id="modal-bg" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="modal-img-wrap"><img id="m-img" src="" alt="" onerror="this.style.display='none'"></div>
+    <div class="modal-body">
+      <button class="modal-close" onclick="document.getElementById('modal-bg').classList.remove('open')">x</button>
+      <p class="modal-code" id="m-code"></p>
+      <h2 class="modal-name" id="m-name"></h2>
+      <p class="modal-brand" id="m-brand"></p>
+      <span class="modal-cat" id="m-cat"></span>
+      <p class="modal-desc" id="m-desc"></p>
+      <p class="modal-source">Fuente: <a id="m-src-link" href="#" target="_blank" rel="noopener"></a></p>
+      <div class="modal-actions">
+        <a class="m-btn gold" id="m-dl" href="#" download target="_blank" rel="noopener">Descargar imagen</a>
+        <a class="m-btn" id="m-src-btn" href="#" target="_blank" rel="noopener">Ver fuente</a>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>
+  <div>BENTLEY KIDS - TREND BOARD - Actualizado diariamente</div>
+  <div>kidsbentley.com</div>
+</footer>
+<script>
+const DAYS=[
+  {
+    fecha:"2026-08-08",label:"08 de agosto, 2026",
+    marcas:["Molo","Rylee + Cru","Mini Rodini","Bobo Choses"],
+    resumen:"Paleta neutro-terrosa dominando: crema, oliva, camel y borgona. Matching sets y collegiate-varsity lideran las colecciones premium 2026.",
+    fotos:[
+      {codigo:"BK-CJ01",nombre:"Varsity Olive",categoria:"Chaquetas",descripcion:"Chaqueta varsity en punto grueso color oliva militar, ribetes crema en cuello y punos, silueta relaxed. French terry 300g. Tallas 2-12.",urgencia:"Alta",imagen:"https://molo.centracdn.net/client/dynamic/originals/7253_1W26A304_5933_A-original.jpg",fuente:"https://www.molo.com",marca:"Molo"},
+      {codigo:"BK-CJ02",nombre:"Bomber Camel",categoria:"Chaquetas",descripcion:"Bomber oversize algodon satinado camel, punos y cintura elasticos negro, bolsillos cremallera. Tallas 2-12.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254CHAR-PETAL-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+      {codigo:"BK-BZ01",nombre:"Collegiate Cream",categoria:"Buzos",descripcion:"Hoodie oversize aplique 3D sutil pecho, crema roto, interior afelpado. Dropped shoulder. Tallas 2-14.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC714SSDD-INDIGO-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+      {codigo:"BK-BZ02",nombre:"Urban Borgona",categoria:"Buzos",descripcion:"Buzo cuello redondo fleece suave borgona, punos y cintura acanalados. Tallas 2-14.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://www.molo.com",marca:"Molo"},
+      {codigo:"BK-CT01",nombre:"Graphic Neutral",categoria:"Camisetas",descripcion:"Camiseta oversize jersey 180g gris ceniza, ilustracion minimal linea en pecho. Tallas 2-14.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/7a4fa39dfd/3-63.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
+      {codigo:"BK-CT02",nombre:"Longsleeve Stripe",categoria:"Camisetas",descripcion:"Camiseta manga larga rayas finas camel y crema, algodon pima 200g. Tallas 2-12.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC599MENT-MIDNIGHT-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+      {codigo:"BK-CO01",nombre:"Matching Set Oliva",categoria:"Conjuntos",descripcion:"Conjunto buzo + pantalon cargo french terry oliva. Bolsillos funcionales, cintura elastica. Tallas 2-12.",urgencia:"Alta",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/bc25e25a1e/3-64.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
+      {codigo:"BK-CO02",nombre:"Set Gris Premium",categoria:"Conjuntos",descripcion:"Conjunto camiseta + short jersey premium gris marengo. Costuras planas, cintura ajustable. Tallas 2-10.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/f15af0bd319f4e099249ecf67b5cd571.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+      {codigo:"BK-PT01",nombre:"Cargo Camel",categoria:"Pantalones",descripcion:"Pantalon cargo twill algodon 240g camel, 6 bolsillos, cintura elastica, bota wide. Tallas 2-14.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC860SSDD-INDIGO-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+      {codigo:"BK-PT02",nombre:"Jogger Crema",categoria:"Pantalones",descripcion:"Jogger fleece suave crema roto, punos acanalados, cordon en cintura. Tallas 2-14.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC907NDRE-ROSEWOOD-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+      {codigo:"BK-AB01",nombre:"Overcoat Camel",categoria:"Abrigos",descripcion:"Abrigo overcoat mezcla lana camel, corte recto structured, botones dorados, solapa ancha. Tallas 4-14.",urgencia:"Alta",imagen:"https://a.storyblok.com/f/287543645078635/1800x2592/50353316bc/110925_molo_l_b_p_67_0063.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
+      {codigo:"BK-AB02",nombre:"Puffer Urban Negro",categoria:"Abrigos",descripcion:"Puffer corto nylon reciclado negro, capucha desmontable, bolsillos cremallera. Tallas 2-14.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1200x1002/c6e150a431/molo_21sep_2025_scan_1165_ws1_work_argb_low.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
+      {codigo:"BK-VD01",nombre:"Midi Dusty Rose",categoria:"Vestidos",descripcion:"Vestido midi corduroy fino dusty rose, silueta A, mangas largas con puno. Sin vuelo ni tul. Tallas 2-12.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC869FFDS-MULBERRY-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+      {codigo:"BK-VD02",nombre:"Smock Crema",categoria:"Vestidos",descripcion:"Vestido smocked algodon organico crema, bordado tonal pecho. Tallas 2-12.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254MDMN-MIDNIGHT-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+      {codigo:"BK-BL01",nombre:"Linen Oliva",categoria:"Blusas",descripcion:"Blusa oversize lino natural oliva, cuello mao botones nacar, mangas anchas. Tallas 4-14.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7592_6W26I104_5959_A-original.jpg",fuente:"https://www.molo.com",marca:"Molo"},
+      {codigo:"BK-BL02",nombre:"Puff Sleeve Crema",categoria:"Blusas",descripcion:"Blusa mangas abullonadas popelin crema, cuello redondo, largo cadera. Tallas 4-14.",urgencia:"Baja",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254CHAR-PETAL-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"}
+    ]
+  }
+  // <- EL AGENTE INSERTA NUEVOS DIAS AQUI ARRIBA, ANTES DE ESTE COMENTARIO
+];
+let activeCat='all',activeUrg='all';
+const chipCls=u=>u==='Alta'?'chip-alta':u==='Media'?'chip-media':'chip-baja';
+const isNew=f=>f===new Date().toISOString().slice(0,10);
+function renderBoard(){
+  const board=document.getElementById('board');
+  let total=0;
+  board.innerHTML=DAYS.map((day,di)=>{
+    const fotos=day.fotos.filter(f=>(activeCat==='all'||f.categoria===activeCat)&&(activeUrg==='all'||f.urgencia===activeUrg));
+    if(!fotos.length)return '';
+    total+=fotos.length;
+    const nuevo=isNew(day.fecha)||di===0;
+    const cards=fotos.map(f=>`<div class="photo-card" onclick="openMod('${f.codigo}',${di})"><span class="source-badge">${f.marca}</span><img src="${f.imagen}" alt="${f.nombre}" loading="lazy" onerror="this.style.display='none'"><div class="photo-overlay"><span class="ov-chip ${chipCls(f.urgencia)}">${f.urgencia}</span><div class="ov-name">${f.nombre}</div><div class="ov-cat">${f.categoria} · ${f.codigo}</div><div class="ov-actions"><a class="ov-btn dl" href="${f.imagen}" download="${f.codigo}.jpg" target="_blank" onclick="event.stopPropagation()">Descargar</a><button class="ov-btn" onclick="event.stopPropagation();openMod('${f.codigo}',${di})">Detalle</button></div></div></div>`).join('');
+    return `<div class="date-section"><div class="date-label"><span>${day.label}</span>${nuevo?'<span class="new-pill">NEW</span>':''}</div><div class="brand-info">Marcas: ${day.marcas.join(' · ')} &nbsp;·&nbsp; ${day.resumen.substring(0,110)}...</div></div><div class="photo-grid">${cards}</div>`;
+  }).join('');
+  if(!total)board.innerHTML='<div class="empty">Sin resultados</div>';
+  document.getElementById('total-badge').textContent=total+' referencias';
+}
+function openMod(codigo,di){
+  const f=DAYS.flatMap(d=>d.fotos).find(x=>x.codigo===codigo);
+  if(!f)return;
+  document.getElementById('m-img').src=f.imagen;
+  document.getElementById('m-code').textContent=f.codigo;
+  document.getElementById('m-name').textContent=f.nombre;
+  document.getElementById('m-brand').textContent=f.marca;
+  document.getElementById('m-cat').textContent=f.categoria;
+  document.getElementById('m-desc').textContent=f.descripcion;
+  document.getElementById('m-src-link').textContent=f.fuente;
+  document.getElementById('m-src-link').href=f.fuente;
+  document.getElementById('m-src-btn').href=f.fuente;
+  document.getElementById('m-dl').href=f.imagen;
+  document.getElementById('modal-bg').classList.add('open');
+}
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');activeCat=b.dataset.cat;renderBoard()}));
+document.querySelectorAll('.ubtn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.ubtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');activeUrg=b.dataset.u;renderBoard()}));
+renderBoard();
+</script>
+</body>
+</html>
