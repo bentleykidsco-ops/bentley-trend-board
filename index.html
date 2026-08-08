@@ -441,10 +441,10 @@ document.getElementById("mfb-dis").addEventListener("click",function(){setFB(ope
 document.querySelectorAll(".mbtn").forEach(function(b){b.addEventListener("click",function(){
   mode=b.dataset.mode;
   document.querySelectorAll(".mbtn").forEach(function(x){x.classList.remove("on")});b.classList.add("on");
-  document.getElementById("tend-board").style.display=mode==="tendencias"?"":"none";
-  document.getElementById("est-board").style.display=mode==="estampados"?"":"none";
-  document.getElementById("t-menu-wrap").style.display=mode==="tendencias"?"":"none";
-  document.getElementById("e-menu-wrap").style.display=mode==="estampados"?"":"none";
+  document.getElementById("tend-board").style.display=mode==="tendencias"?"block":"none";
+  document.getElementById("est-board").style.display=mode==="estampados"?"block":"none";
+  document.getElementById("t-menu-wrap").style.display=mode==="tendencias"?"block":"none";
+  document.getElementById("e-menu-wrap").style.display=mode==="estampados"?"block":"none";
   render();updateUI();
 })});
 document.querySelectorAll("[data-tcat]").forEach(function(b){b.addEventListener("click",function(){
