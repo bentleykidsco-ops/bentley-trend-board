@@ -4,389 +4,290 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bentley Kids · Trend Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:light;--gold:#c8a96e;--black:#0a0a0a;--cream:#f8f7f4;--like:#e8547a;--dislike:#666}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Helvetica Neue',Arial,sans-serif;background:var(--black);color:#fff;min-height:100vh}
-.header{position:sticky;top:0;z-index:200;background:rgba(10,10,10,.97);backdrop-filter:blur(14px);border-bottom:1px solid #1a1a1a;display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:54px;gap:16px}
-.logo{font-size:12px;font-weight:900;letter-spacing:5px;color:#fff;white-space:nowrap}
-.logo b{color:var(--gold)}
-.hbadges{display:flex;gap:8px;align-items:center;flex-shrink:0}
-.badge{background:#1a1a1a;border:1px solid #2a2a2a;font-size:9px;font-weight:800;letter-spacing:1px;padding:4px 12px;border-radius:20px;white-space:nowrap}
-.badge.likes{color:var(--like);border-color:#3a1520}
-.badge.days{color:var(--gold)}
-.filters{background:#0e0e0e;border-bottom:1px solid #181818;padding:0 28px;display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;min-height:46px}
-.filters::-webkit-scrollbar{display:none}
-.fbtn{background:none;border:none;border-bottom:2px solid transparent;padding:13px 14px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#444;cursor:pointer;white-space:nowrap;transition:all .2s}
-.fbtn:hover{color:#888}
-.fbtn.on{color:var(--gold);border-bottom-color:var(--gold)}
-.f-sep{width:1px;height:18px;background:#222;margin:0 6px;flex-shrink:0}
-.ubtn{background:none;border:1px solid #222;border-radius:20px;padding:4px 12px;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:#444;transition:all .2s;flex-shrink:0}
-.ubtn.on{background:var(--gold);border-color:var(--gold);color:#000}
-.lbtn{background:none;border:1px solid #3a1520;border-radius:20px;padding:4px 14px;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:#844;transition:all .2s;flex-shrink:0;display:flex;align-items:center;gap:4px}
-.lbtn.on{background:var(--like);border-color:var(--like);color:#fff}
-.week-stats{background:#0d0d0d;border-bottom:1px solid #181818;padding:12px 28px;display:flex;gap:24px;overflow-x:auto;scrollbar-width:none}
-.week-stats::-webkit-scrollbar{display:none}
-.stat-item{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
-.stat-label{font-size:8px;font-weight:800;letter-spacing:2px;color:#333;text-transform:uppercase}
-.stat-val{font-size:16px;font-weight:900;color:var(--gold)}
-.stat-sub{font-size:9px;color:#444}
-.date-section{padding:32px 28px 12px}
-.date-label{font-size:9px;font-weight:800;letter-spacing:4px;color:#2a2a2a;text-transform:uppercase;display:flex;align-items:center;gap:12px}
-.date-label span{color:var(--gold);font-size:11px}
-.date-label::after{content:'';flex:1;height:1px;background:#161616}
-.new-pill{background:var(--gold);color:#000;font-size:7px;font-weight:900;letter-spacing:2px;padding:2px 8px;border-radius:20px;text-transform:uppercase}
-.brand-info{color:#333;font-size:10px;margin-top:6px;line-height:1.6}
-.photo-grid{padding:0 28px 16px;columns:4 210px;column-gap:8px}
-@media(max-width:900px){.photo-grid{columns:2 170px}}
-@media(max-width:480px){.photo-grid{columns:2 130px}}
-.photo-card{break-inside:avoid;position:relative;margin-bottom:8px;border-radius:6px;overflow:hidden;cursor:pointer;background:#111;transition:transform .25s}
-.photo-card:hover{transform:scale(1.012);z-index:10}
-.photo-card.liked{box-shadow:0 0 0 2px var(--like)}
-.photo-card.disliked{opacity:.35;filter:grayscale(.6)}
-.photo-card img{width:100%;display:block;object-fit:cover;min-height:160px;max-height:460px;background:#111}
-.photo-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,0) 45%);opacity:0;transition:opacity .25s;display:flex;flex-direction:column;justify-content:flex-end;padding:14px}
-.photo-card:hover .photo-overlay{opacity:1}
-.ov-chip{display:inline-block;font-size:7px;font-weight:900;letter-spacing:1px;padding:2px 7px;border-radius:20px;color:#fff;text-transform:uppercase;margin-bottom:5px;align-self:flex-start}
-.chip-alta{background:var(--gold);color:#000}
-.chip-media{background:#4a7a5a}
-.chip-baja{background:#444}
-.ov-name{font-size:13px;font-weight:900;color:#fff;line-height:1.2}
-.ov-cat{font-size:8px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
-.ov-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-.ov-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:8px;font-weight:700;letter-spacing:1px;padding:5px 10px;border-radius:4px;cursor:pointer;text-transform:uppercase;text-decoration:none;transition:background .2s;white-space:nowrap}
-.ov-btn:hover{background:rgba(255,255,255,.22)}
-.ov-btn.dl{background:var(--gold);border-color:var(--gold);color:#000}
-.fb-btns{position:absolute;top:10px;right:10px;display:flex;gap:5px;opacity:0;transition:opacity .25s}
-.photo-card:hover .fb-btns,.photo-card.liked .fb-btns,.photo-card.disliked .fb-btns{opacity:1}
-.fb-btn{width:30px;height:30px;border-radius:50%;border:none;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:transform .15s}
-.fb-btn:active{transform:scale(.88)}
-.fb-like{background:rgba(0,0,0,.6);color:#fff}
-.fb-like.active{background:var(--like);color:#fff}
-.fb-dis{background:rgba(0,0,0,.6);color:#fff}
-.fb-dis.active{background:#555;color:#fff}
-.source-badge{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);color:#fff;font-size:7px;font-weight:800;letter-spacing:1px;padding:3px 9px;border-radius:20px;text-transform:uppercase}
-.like-indicator{position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--like);transform:scaleX(0);transform-origin:left;transition:transform .3s}
-.photo-card.liked .like-indicator{transform:scaleX(1)}
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:300;align-items:center;justify-content:center;padding:20px}
+:root{--black:#000;--white:#fff;--gray:#888;--light:#f5f5f3;--gold:#b8924a;--like:#c0392b}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden}
+.site-header{position:fixed;top:0;left:0;right:0;z-index:500;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(255,255,255,.96);backdrop-filter:blur(8px)}
+.hamburger{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px}
+.hamburger span{display:block;width:22px;height:1px;background:var(--black);transition:all .3s}
+.site-logo{font-family:'EB Garamond',serif;font-size:15px;font-weight:400;letter-spacing:6px;text-transform:uppercase;color:var(--black);text-decoration:none;position:absolute;left:50%;transform:translateX(-50%)}
+.site-logo em{font-style:italic;color:var(--gold)}
+.header-right{display:flex;align-items:center;gap:16px}
+.header-right span{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gray)}
+.likes-count{color:var(--like)!important}
+.menu-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .35s}
+.menu-overlay.open{opacity:1;pointer-events:all}
+.side-menu{position:fixed;top:0;left:-340px;bottom:0;width:320px;background:var(--white);z-index:410;transition:left .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow-y:auto}
+.side-menu.open{left:0}
+.menu-head{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid #f0f0f0}
+.menu-head-logo{font-family:'EB Garamond',serif;font-size:13px;letter-spacing:5px;text-transform:uppercase}
+.menu-close{background:none;border:none;cursor:pointer;font-size:18px;color:var(--black);line-height:1}
+.menu-section{padding:28px 24px 0}
+.menu-section-label{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-bottom:14px}
+.menu-items{display:flex;flex-direction:column}
+.menu-item{background:none;border:none;border-bottom:1px solid #f5f5f5;text-align:left;padding:13px 0;font-family:'EB Garamond',serif;font-size:20px;cursor:pointer;color:var(--black);display:flex;align-items:center;justify-content:space-between;transition:color .2s}
+.menu-item:hover{color:var(--gold)}
+.menu-item.active{color:var(--gold)}
+.menu-item-count{font-family:'Inter',sans-serif;font-size:9px;color:var(--gray);letter-spacing:1px}
+.menu-divider{height:1px;background:#f0f0f0;margin:24px 24px 0}
+.menu-urgency{padding:20px 24px 0}
+.urg-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.urg-chip{background:none;border:1px solid #ddd;border-radius:20px;padding:6px 16px;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:var(--gray);transition:all .2s;font-family:'Inter',sans-serif}
+.urg-chip.active{background:var(--black);border-color:var(--black);color:var(--white)}
+.menu-likes-toggle{padding:20px 24px}
+.toggle-btn{width:100%;padding:12px;border:1px solid #ddd;border-radius:4px;background:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);transition:all .2s;display:flex;align-items:center;gap:8px}
+.toggle-btn.on{background:var(--like);border-color:var(--like);color:var(--white)}
+.menu-stats{padding:0 24px 32px}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f5f5f5}
+.stat-row:last-child{border:none}
+.stat-name{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gray)}
+.stat-val{font-family:'EB Garamond',serif;font-size:18px}
+.main{padding-top:52px}
+.day-header{padding:48px 20px 12px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+.day-date{font-family:'EB Garamond',serif;font-size:28px;font-weight:400}
+.day-brands{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gray)}
+.day-new{font-size:8px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--white);background:var(--black);padding:3px 10px;border-radius:2px;margin-left:auto}
+.day-summary{padding:0 20px 24px;font-family:'EB Garamond',serif;font-size:16px;color:#999;line-height:1.7;max-width:560px;font-style:italic}
+.editorial-block{width:100%}
+.block-duo{display:grid;grid-template-columns:1fr 1fr;gap:2px;height:100vh;min-height:480px;max-height:920px}
+.block-solo{height:88vh;min-height:440px;max-height:820px}
+.ed-card{position:relative;overflow:hidden;cursor:pointer;background:var(--light)}
+.ed-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.25,.46,.45,.94)}
+.ed-card:hover img{transform:scale(1.03)}
+.card-label{position:absolute;bottom:0;left:0;right:0;padding:50px 20px 20px;background:linear-gradient(to top,rgba(0,0,0,.55) 0%,transparent 100%);display:flex;flex-direction:column;gap:3px}
+.card-label-cat{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.65)}
+.card-label-name{font-family:'EB Garamond',serif;font-size:19px;color:var(--white);line-height:1.2}
+.card-label-marca{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.card-urgency{position:absolute;top:14px;left:14px;font-size:7px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border-radius:2px;background:rgba(255,255,255,.9);color:var(--black)}
+.card-urgency.alta{background:var(--black);color:var(--white)}
+.card-fb{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:6px;opacity:0;transition:opacity .2s}
+.ed-card:hover .card-fb,.ed-card.liked .card-fb,.ed-card.disliked .card-fb{opacity:1}
+.fb-pill{width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.9);transition:transform .15s,background .15s;backdrop-filter:blur(4px)}
+.fb-pill:active{transform:scale(.85)}
+.fb-pill.like-active{background:var(--like)}
+.fb-pill.dis-active{background:#333}
+.ed-card.liked{outline:2px solid var(--like)}
+.ed-card.disliked{opacity:.3;filter:grayscale(.7)}
+.ed-card.disliked:hover{opacity:.5}
+.card-overlay{position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none}
+.ed-card:hover .card-overlay{opacity:1}
+.overlay-actions{position:absolute;bottom:74px;left:20px;display:flex;gap:8px;pointer-events:all}
+.ov-pill{background:rgba(255,255,255,.92);border:none;border-radius:2px;padding:8px 16px;font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;color:var(--black);text-decoration:none;transition:background .2s;backdrop-filter:blur(4px);white-space:nowrap}
+.ov-pill:hover{background:var(--white)}
+.ov-pill.dl{background:var(--black);color:var(--white)}
+.ov-pill.dl:hover{background:#222}
+.day-sep{height:1px;background:#ebebeb;margin:40px 0 0}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:600;align-items:center;justify-content:center;padding:20px}
 .modal-bg.open{display:flex}
-.modal{background:#111;border:1px solid #1e1e1e;border-radius:8px;max-width:860px;width:100%;max-height:92vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
-@media(max-width:680px){.modal{grid-template-columns:1fr;max-height:98vh}}
-.modal-img-wrap{background:#0a0a0a;overflow:hidden;position:relative}
-.modal-img-wrap img{width:100%;height:100%;object-fit:contain;display:block;max-height:55vh}
-.modal-fb{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:10px}
-.modal-fb-btn{padding:8px 20px;border-radius:24px;border:none;font-size:11px;font-weight:800;letter-spacing:1px;cursor:pointer;transition:all .2s}
-.mfb-like{background:rgba(232,84,122,.15);color:var(--like);border:1px solid rgba(232,84,122,.3)}
-.mfb-like.active{background:var(--like);color:#fff}
-.mfb-dis{background:rgba(255,255,255,.05);color:#555;border:1px solid #2a2a2a}
-.mfb-dis.active{background:#333;color:#fff}
-.modal-body{padding:28px;overflow-y:auto}
-.modal-close{float:right;background:none;border:none;color:#444;font-size:20px;cursor:pointer;line-height:1;margin-left:8px}
-.modal-close:hover{color:#fff}
-.modal-code{font-size:8px;letter-spacing:2px;color:#444;text-transform:uppercase;margin-bottom:4px}
-.modal-name{font-size:20px;font-weight:900;color:#fff;margin-bottom:3px;line-height:1.2}
-.modal-brand{font-size:9px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
-.modal-cat{display:inline-block;border:1px solid #222;color:#666;font-size:8px;letter-spacing:1px;padding:3px 10px;border-radius:20px;text-transform:uppercase;margin-bottom:14px}
-.modal-desc{font-size:12px;color:#666;line-height:1.9;margin-bottom:20px}
-.modal-source{font-size:10px;color:#444;margin-bottom:18px}
-.modal-source a{color:var(--gold);text-decoration:none}
-.modal-actions{display:flex;gap:8px;flex-wrap:wrap}
-.m-btn{border:1px solid #222;color:#666;font-size:9px;font-weight:700;letter-spacing:1px;padding:9px 16px;border-radius:4px;cursor:pointer;text-transform:uppercase;text-decoration:none;background:none;transition:all .2s}
-.m-btn:hover{border-color:#444;color:#fff}
-.m-btn.gold{background:var(--gold);border-color:var(--gold);color:#000}
-.empty{padding:80px;text-align:center;color:#2a2a2a;font-size:13px}
-footer{border-top:1px solid #141414;padding:20px 28px;display:flex;justify-content:space-between;align-items:center;color:#222;font-size:9px;letter-spacing:1px;margin-top:40px}
+.modal{background:var(--white);max-width:980px;width:100%;max-height:92vh;display:grid;grid-template-columns:1fr 400px;overflow:hidden;border-radius:2px}
+@media(max-width:700px){.modal{grid-template-columns:1fr}}
+.modal-img{background:var(--light);position:relative;overflow:hidden}
+.modal-img img{width:100%;height:100%;object-fit:cover;display:block;max-height:80vh}
+.modal-body{padding:32px 28px;overflow-y:auto;display:flex;flex-direction:column;gap:18px}
+.modal-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.9);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;color:var(--black);display:flex;align-items:center;justify-content:center}
+.modal-code{font-size:8px;letter-spacing:3px;color:var(--gray);text-transform:uppercase}
+.modal-name{font-family:'EB Garamond',serif;font-size:30px;line-height:1.15;font-weight:400}
+.modal-brand{font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
+.modal-chips{display:flex;gap:8px;flex-wrap:wrap}
+.modal-chip{font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border:1px solid #ddd;border-radius:2px;color:#666}
+.modal-desc{font-family:'EB Garamond',serif;font-size:17px;color:#555;line-height:1.8}
+.modal-source{font-size:10px;color:var(--gray)}
+.modal-source a{color:var(--black)}
+.modal-fb-row{display:flex;gap:10px}
+.modal-fb-btn{flex:1;padding:11px;border:1px solid #ddd;border-radius:2px;cursor:pointer;font-size:11px;background:none;transition:all .2s}
+.modal-fb-btn.like-on{background:var(--like);border-color:var(--like);color:var(--white)}
+.modal-fb-btn.dis-on{background:#333;border-color:#333;color:var(--white)}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}
+.modal-btn{padding:12px 22px;font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;border:1px solid #ddd;border-radius:2px;cursor:pointer;text-decoration:none;color:var(--black);background:none;transition:all .2s}
+.modal-btn:hover{border-color:var(--black)}
+.modal-btn.primary{background:var(--black);color:var(--white);border-color:var(--black)}
+.no-results{padding:100px 20px;text-align:center;font-family:'EB Garamond',serif;font-size:22px;color:#ccc;font-style:italic}
+footer{padding:36px 20px;border-top:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#bbb;margin-top:60px}
+@media(max-width:768px){.block-duo{grid-template-columns:1fr;height:auto}.block-duo .ed-card{height:65vh}.block-solo{height:70vh}.day-date{font-size:22px}}
 </style>
 </head>
 <body>
-<header class="header">
-  <div class="logo">BENTLEY<b>KIDS</b><span style="color:#222;font-size:9px;font-weight:400;letter-spacing:2px;margin-left:10px">TREND BOARD</span></div>
-  <div class="hbadges">
-    <span class="badge likes" id="badge-likes">❤️ 0</span>
-    <span class="badge days" id="badge-total">0 referencias</span>
+<header class="site-header">
+  <button class="hamburger" id="menu-btn">
+    <span></span><span></span>
+  </button>
+  <a class="site-logo" href="#">BENTLEY<em>KIDS</em></a>
+  <div class="header-right">
+    <span class="likes-count" id="hdr-likes"></span>
+    <span id="hdr-total"></span>
   </div>
 </header>
-<nav class="filters">
-  <button class="fbtn on" data-cat="all">Todo</button>
-  <button class="fbtn" data-cat="Chaquetas">Chaquetas</button>
-  <button class="fbtn" data-cat="Buzos">Buzos</button>
-  <button class="fbtn" data-cat="Camisetas">Camisetas</button>
-  <button class="fbtn" data-cat="Conjuntos">Conjuntos</button>
-  <button class="fbtn" data-cat="Pantalones">Pantalones</button>
-  <button class="fbtn" data-cat="Abrigos">Abrigos</button>
-  <button class="fbtn" data-cat="Vestidos">Vestidos</button>
-  <button class="fbtn" data-cat="Blusas">Blusas</button>
-  <div class="f-sep"></div>
-  <button class="ubtn on" data-u="all">Todas</button>
-  <button class="ubtn" data-u="Alta">Alta</button>
-  <button class="ubtn" data-u="Media">Media</button>
-  <div class="f-sep"></div>
-  <button class="lbtn" id="like-filter-btn" data-mode="all">❤️ Solo me gusta</button>
+<div class="menu-overlay" id="menu-overlay" onclick="closeMenu()"></div>
+<nav class="side-menu" id="side-menu">
+  <div class="menu-head">
+    <span class="menu-head-logo">Trend Board</span>
+    <button class="menu-close" onclick="closeMenu()">&#x2715;</button>
+  </div>
+  <div class="menu-section">
+    <div class="menu-section-label">Categorias</div>
+    <div class="menu-items" id="cat-menu">
+      <button class="menu-item active" data-cat="all">Todos <span class="menu-item-count" id="cnt-all"></span></button>
+      <button class="menu-item" data-cat="Chaquetas">Chaquetas <span class="menu-item-count" id="cnt-Chaquetas"></span></button>
+      <button class="menu-item" data-cat="Buzos">Buzos <span class="menu-item-count" id="cnt-Buzos"></span></button>
+      <button class="menu-item" data-cat="Camisetas">Camisetas <span class="menu-item-count" id="cnt-Camisetas"></span></button>
+      <button class="menu-item" data-cat="Conjuntos">Conjuntos <span class="menu-item-count" id="cnt-Conjuntos"></span></button>
+      <button class="menu-item" data-cat="Pantalones">Pantalones <span class="menu-item-count" id="cnt-Pantalones"></span></button>
+      <button class="menu-item" data-cat="Abrigos">Abrigos <span class="menu-item-count" id="cnt-Abrigos"></span></button>
+      <button class="menu-item" data-cat="Vestidos">Vestidos <span class="menu-item-count" id="cnt-Vestidos"></span></button>
+      <button class="menu-item" data-cat="Blusas">Blusas <span class="menu-item-count" id="cnt-Blusas"></span></button>
+    </div>
+  </div>
+  <div class="menu-divider"></div>
+  <div class="menu-urgency">
+    <div class="menu-section-label">Urgencia</div>
+    <div class="urg-chips">
+      <button class="urg-chip active" data-u="all">Todas</button>
+      <button class="urg-chip" data-u="Alta">Alta</button>
+      <button class="urg-chip" data-u="Media">Media</button>
+    </div>
+  </div>
+  <div class="menu-divider"></div>
+  <div class="menu-likes-toggle">
+    <button class="toggle-btn" id="likes-toggle">&#x2764;&#xFE0F; Solo lo que me gusta</button>
+  </div>
+  <div class="menu-divider"></div>
+  <div class="menu-stats">
+    <div class="menu-section-label" style="margin-bottom:16px">Esta semana</div>
+    <div id="menu-stats-body"></div>
+  </div>
 </nav>
-<div class="week-stats" id="week-stats"></div>
-<div id="board"></div>
+<main class="main" id="main-board"></main>
 <div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeMod()">
   <div class="modal">
-    <div class="modal-img-wrap">
-      <img id="m-img" src="" alt="" onerror="this.style.display='none'">
-      <div class="modal-fb">
-        <button class="modal-fb-btn mfb-like" id="mfb-like" onclick="modalFb('like')">❤️ Me gusta</button>
-        <button class="modal-fb-btn mfb-dis" id="mfb-dis" onclick="modalFb('dislike')">👎 No gusta</button>
-      </div>
+    <div class="modal-img">
+      <img id="m-img" src="" alt="">
+      <button class="modal-close" onclick="closeMod()">&#x2715;</button>
     </div>
     <div class="modal-body">
-      <button class="modal-close" onclick="closeMod()">✕</button>
-      <p class="modal-code" id="m-code"></p>
-      <h2 class="modal-name" id="m-name"></h2>
-      <p class="modal-brand" id="m-brand"></p>
-      <span class="modal-cat" id="m-cat"></span>
+      <div>
+        <p class="modal-code" id="m-code"></p>
+        <h2 class="modal-name" id="m-name"></h2>
+        <p class="modal-brand" id="m-brand"></p>
+      </div>
+      <div class="modal-chips">
+        <span class="modal-chip" id="m-cat"></span>
+        <span class="modal-chip" id="m-urg"></span>
+      </div>
       <p class="modal-desc" id="m-desc"></p>
       <p class="modal-source">Fuente: <a id="m-src" href="#" target="_blank" rel="noopener"></a></p>
+      <div class="modal-fb-row">
+        <button class="modal-fb-btn" id="mfb-like" onclick="modalFb('like')">&#x2764;&#xFE0F; Me gusta</button>
+        <button class="modal-fb-btn" id="mfb-dis" onclick="modalFb('dislike')">&#x1F44E; No gusta</button>
+      </div>
       <div class="modal-actions">
-        <a class="m-btn gold" id="m-dl" href="#" download target="_blank" rel="noopener">Descargar imagen</a>
-        <a class="m-btn" id="m-src-btn" href="#" target="_blank" rel="noopener">Ver en tienda</a>
+        <a class="modal-btn primary" id="m-dl" href="#" target="_blank" rel="noopener">Descargar</a>
+        <a class="modal-btn" id="m-src-btn" href="#" target="_blank" rel="noopener">Ver en tienda</a>
       </div>
     </div>
   </div>
 </div>
 <footer>
-  <span>BENTLEY KIDS · TREND BOARD · Actualizado diariamente</span>
+  <span>Bentley Kids &middot; Trend Board</span>
+  <span id="footer-date"></span>
   <span>kidsbentley.com</span>
 </footer>
-
 <script>
-// ─── DATA ───────────────────────────────────────────────────────────
 const DAYS=[
-  {
-    fecha:"2026-08-08",label:"08 de agosto, 2026",
-    marcas:["Molo","Rylee + Cru"],
-    resumen:"Paleta neutro-terrosa: oliva, camel, crema. Matching sets y varsity collegiate lideran colecciones premium.",
-    fotos:[
-      {codigo:"BK-0808-CJ01",nombre:"Varsity Olive",categoria:"Chaquetas",descripcion:"Chaqueta varsity punto grueso oliva militar, ribetes crema en cuello y puños, silueta relaxed. French terry 300g. Tallas 2-12.",urgencia:"Alta",imagen:"https://molo.centracdn.net/client/dynamic/originals/7253_1W26A304_5933_A-original.jpg",fuente:"https://www.molo.com",marca:"Molo"},
-      {codigo:"BK-0808-CJ02",nombre:"Bomber Camel",categoria:"Chaquetas",descripcion:"Bomber oversize algodón satinado camel, puños y cintura elásticos negro, bolsillos cremallera. Tallas 2-12.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254CHAR-PETAL-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0808-BZ01",nombre:"Collegiate Cream",categoria:"Buzos",descripcion:"Hoodie oversize crema roto, aplique 3D pecho, dropped shoulder, interior afelpado. Tallas 2-14.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC714SSDD-INDIGO-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0808-BZ02",nombre:"Urban Borgoña",categoria:"Buzos",descripcion:"Buzo cuello redondo fleece suave borgoña, puños y cintura acanalados. Tallas 2-14.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://www.molo.com",marca:"Molo"},
-      {codigo:"BK-0808-CT01",nombre:"Graphic Neutral",categoria:"Camisetas",descripcion:"Camiseta oversize jersey 180g gris ceniza, ilustración minimal línea en pecho. Tallas 2-14.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/7a4fa39dfd/3-63.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
-      {codigo:"BK-0808-CT02",nombre:"Longsleeve Stripe",categoria:"Camisetas",descripcion:"Camiseta manga larga rayas finas camel y crema, algodón pima 200g. Tallas 2-12.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC599MENT-MIDNIGHT-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0808-CO01",nombre:"Matching Set Oliva",categoria:"Conjuntos",descripcion:"Conjunto buzo + pantalón cargo french terry oliva. Bolsillos funcionales, cintura elástica. Tallas 2-12.",urgencia:"Alta",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/bc25e25a1e/3-64.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
-      {codigo:"BK-0808-CO02",nombre:"Set Gris Premium",categoria:"Conjuntos",descripcion:"Conjunto camiseta + short jersey gris marengo. Costuras planas, cintura ajustable. Tallas 2-10.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/f15af0bd319f4e099249ecf67b5cd571.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0808-PT01",nombre:"Cargo Camel",categoria:"Pantalones",descripcion:"Pantalón cargo twill algodón 240g camel, 6 bolsillos, cintura elástica, bota wide. Tallas 2-14.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC860SSDD-INDIGO-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0808-PT02",nombre:"Jogger Crema",categoria:"Pantalones",descripcion:"Jogger fleece suave crema roto, puños acanalados, cordón en cintura. Tallas 2-14.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC907NDRE-ROSEWOOD-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0808-AB01",nombre:"Overcoat Camel",categoria:"Abrigos",descripcion:"Abrigo overcoat mezcla lana camel, corte recto structured, botones dorados, solapa ancha. Tallas 4-14.",urgencia:"Alta",imagen:"https://a.storyblok.com/f/287543645078635/1800x2592/50353316bc/110925_molo_l_b_p_67_0063.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
-      {codigo:"BK-0808-AB02",nombre:"Puffer Urban Negro",categoria:"Abrigos",descripcion:"Puffer corto nylon reciclado negro, capucha desmontable, bolsillos cremallera. Tallas 2-14.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1200x1002/c6e150a431/molo_21sep_2025_scan_1165_ws1_work_argb_low.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
-      {codigo:"BK-0808-VD01",nombre:"Midi Dusty Rose",categoria:"Vestidos",descripcion:"Vestido midi corduroy fino dusty rose, silueta A, mangas largas con puño. Tallas 2-12.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC869FFDS-MULBERRY-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0808-VD02",nombre:"Smock Crema",categoria:"Vestidos",descripcion:"Vestido smocked algodón orgánico crema, bordado tonal pecho. Tallas 2-12.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254MDMN-MIDNIGHT-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0808-BL01",nombre:"Linen Oliva",categoria:"Blusas",descripcion:"Blusa oversize lino natural oliva, cuello mao botones nácar, mangas anchas. Tallas 4-14.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7592_6W26I104_5959_A-original.jpg",fuente:"https://www.molo.com",marca:"Molo"},
-      {codigo:"BK-0808-BL02",nombre:"Puff Sleeve Crema",categoria:"Blusas",descripcion:"Blusa mangas abullonadas popelín crema, cuello redondo, largo cadera. Tallas 4-14.",urgencia:"Baja",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254CHAR-PETAL-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"}
-    ]
-  },
-  {
-    fecha:"2026-08-07",label:"07 de agosto, 2026",
-    marcas:["Mini Rodini","Bobo Choses"],
-    resumen:"Mini Rodini destaca con gráficos bold animales en tonos tierra. Bobo Choses lidera en vestidos bordados y conjuntos artísticos.",
-    fotos:[
-      {codigo:"BK-0807-CJ01",nombre:"Animal Print Olive",categoria:"Chaquetas",descripcion:"Chaqueta acolchada ligera con print de osos polares en oliva oscuro. Relleno reciclado 90g. Tallas 80-140.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC860SSDD-INDIGO-1-G.jpg",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
-      {codigo:"BK-0807-BZ01",nombre:"Fox Fleece Terracota",categoria:"Buzos",descripcion:"Hoodie fleece terracota con bordado zorro en pecho, interior cepillado. Costuras reforzadas. Tallas 80-140.",urgencia:"Alta",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
-      {codigo:"BK-0807-CT01",nombre:"Doodle Crema Bold",categoria:"Camisetas",descripcion:"Longsleeve crema con doodle artístico multicolor todo-over, jersey 180g algodón orgánico. Tallas 2-11.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/7a4fa39dfd/3-63.jpg/m/3840x0/filters:quality(75)",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
-      {codigo:"BK-0807-VD01",nombre:"Sun Embroidery Azul",categoria:"Vestidos",descripcion:"Vestido midi azul marino con sol bordado en pecho, faldón recto. Algodón popelín. Tallas 2-11.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC869FFDS-MULBERRY-1-G.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
-      {codigo:"BK-0807-CO01",nombre:"Art Set Marrón",categoria:"Conjuntos",descripcion:"Conjunto pantalón + camiseta algodón marrón cálido, serigrafía abstracta pecho. Corte relajado. Tallas 2-10.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/bc25e25a1e/3-64.jpg/m/3840x0/filters:quality(75)",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
-      {codigo:"BK-0807-PT01",nombre:"Wide Leg Musgo",categoria:"Pantalones",descripcion:"Pantalón wide leg lino-algodón musgo, cintura alta con elástico, pernera ancha. Tallas 2-11.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC907NDRE-ROSEWOOD-1-G.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
-      {codigo:"BK-0807-AB01",nombre:"Puffer Patch Azul",categoria:"Abrigos",descripcion:"Puffer ligero azul marino con parches bordados, cremallera YKK, capucha fixed. Tallas 80-140.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1800x2592/50353316bc/110925_molo_l_b_p_67_0063.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
-      {codigo:"BK-0807-BL01",nombre:"Stripe Linen Azul",categoria:"Blusas",descripcion:"Blusa rayas azul y blanco, lino 100%, manga globo, botones frontales. Tallas 4-11.",urgencia:"Baja",imagen:"https://molo.centracdn.net/client/dynamic/originals/7592_6W26I104_5959_A-original.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"}
-    ]
-  },
-  {
-    fecha:"2026-08-06",label:"06 de agosto, 2026",
-    marcas:["Molo","Mini Rodini"],
-    resumen:"Tonos otoñales en pre-colección: burdeos, mostaza y verde pino. Siluetas oversized dominan buzos y camisetas.",
-    fotos:[
-      {codigo:"BK-0806-BZ01",nombre:"Hoodie Burdeos",categoria:"Buzos",descripcion:"Hoodie oversized burdeos con bolsillo canguro, ribetes en punta contrastante. Fleece 380g. Tallas 2-14.",urgencia:"Alta",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://www.molo.com",marca:"Molo"},
-      {codigo:"BK-0806-CT01",nombre:"Graphic Mostaza",categoria:"Camisetas",descripcion:"Camiseta mostaza con ilustración vintage skateboard, jersey ring-spun 190g. Tallas 2-14.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/7a4fa39dfd/3-63.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
-      {codigo:"BK-0806-CJ01",nombre:"Wind Jacket Pino",categoria:"Chaquetas",descripcion:"Cortaviento verde pino nylon ripstop, capucha integrada, empaque en bolsillo. Tallas 2-12.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254CHAR-PETAL-1-G.jpg",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
-      {codigo:"BK-0806-PT01",nombre:"Jogger Mostaza",categoria:"Pantalones",descripcion:"Jogger fleece mostaza, bolsillos laterales, puños acanalados. Cepillado interior. Tallas 2-12.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC860SSDD-INDIGO-1-G.jpg",fuente:"https://www.molo.com",marca:"Molo"},
-      {codigo:"BK-0806-CO01",nombre:"Matching Pino",categoria:"Conjuntos",descripcion:"Conjunto buzo pullover + jogger en verde pino, sin capucha, cuello ribeteado. Tallas 2-10.",urgencia:"Alta",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/bc25e25a1e/3-64.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
-      {codigo:"BK-0806-VD01",nombre:"Pinafore Burdeos",categoria:"Vestidos",descripcion:"Pinafore pana fina burdeos, tirantes anchos, bolsillos delanteros. Sobre camiseta. Tallas 2-12.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC869FFDS-MULBERRY-1-G.jpg",fuente:"https://www.molo.com",marca:"Molo"}
-    ]
-  },
-  {
-    fecha:"2026-08-05",label:"05 de agosto, 2026",
-    marcas:["Rylee + Cru","Bobo Choses"],
-    resumen:"Soft neutrals para transición: beige arena, gris perla y blanco hueso. Prints florales abstractos en vestidos y blusas.",
-    fotos:[
-      {codigo:"BK-0805-BL01",nombre:"Floral Blusa Hueso",categoria:"Blusas",descripcion:"Blusa hueso con print floral abstracto acuarela, mangas plisadas, cuello redondo. Tallas 4-12.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7592_6W26I104_5959_A-original.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0805-VD01",nombre:"Prairie Dress Arena",categoria:"Vestidos",descripcion:"Vestido largo arena algodón lavado, escote cuadrado, botones frontales, tira bordada bajo pecho. Tallas 2-12.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254MDMN-MIDNIGHT-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0805-CT01",nombre:"Long Sleeve Gris",categoria:"Camisetas",descripcion:"Longsleeve gris perla con micro-print todo-over, jersey suave 170g. Tallas 2-12.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC599MENT-MIDNIGHT-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0805-CO01",nombre:"Linen Set Beige",categoria:"Conjuntos",descripcion:"Conjunto camisa + short en lino arena, cuello camp collar, cintura elástica. Tallas 2-10.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/f15af0bd319f4e099249ecf67b5cd571.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
-      {codigo:"BK-0805-PT01",nombre:"Linen Trousers Beige",categoria:"Pantalones",descripcion:"Pantalón lino beige arena, corte relaxed, cintura elástica con cordón. Tallas 2-11.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC907NDRE-ROSEWOOD-1-G.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
-      {codigo:"BK-0805-BZ01",nombre:"Oversized Gris Perla",categoria:"Buzos",descripcion:"Buzo crewneck gris perla oversized, costuras visibles en contraste arena. Fleece 300g orgánico. Tallas 2-14.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"}
-    ]
-  },
-  {
-    fecha:"2026-08-04",label:"04 de agosto, 2026",
-    marcas:["Molo","Rylee + Cru"],
-    resumen:"Prendas con textura: pana, corduroy y punto grueso dominan la semana. Colores joya emergentes: azul safiro y verde esmeralda.",
-    fotos:[
-      {codigo:"BK-0804-CJ01",nombre:"Cord Jacket Safiro",categoria:"Chaquetas",descripcion:"Chaqueta corduroy ancho azul safiro, forro micropolar, botones metálicos. Tallas 2-12.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254CHAR-PETAL-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0804-PT01",nombre:"Corduroy Esmeralda",categoria:"Pantalones",descripcion:"Pantalón corduroy fino verde esmeralda, corte slim relajado, cintura ajustable. Tallas 2-14.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC860SSDD-INDIGO-1-G.jpg",fuente:"https://www.molo.com",marca:"Molo"},
-      {codigo:"BK-0804-BZ01",nombre:"Knit Safiro Textura",categoria:"Buzos",descripcion:"Suéter punto grueso azul safiro, cuello alto, mangas amplias. Merino blend. Tallas 2-12.",urgencia:"Alta",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://www.molo.com",marca:"Molo"},
-      {codigo:"BK-0804-VD01",nombre:"Cord Dress Esmeralda",categoria:"Vestidos",descripcion:"Vestido pana fina esmeralda, manga larga, cinturón tela mismo material. Tallas 2-12.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC869FFDS-MULBERRY-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0804-CO01",nombre:"Knit Set Camel Textura",categoria:"Conjuntos",descripcion:"Conjunto suéter punto + pantalón punto camel, misma textura trenzada. Tallas 4-12.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/bc25e25a1e/3-64.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
-      {codigo:"BK-0804-AB01",nombre:"Teddy Coat Crema",categoria:"Abrigos",descripcion:"Abrigo teddy faux fur crema, corte oversized, bolsillos de parche, sin forro. Tallas 4-14.",urgencia:"Alta",imagen:"https://a.storyblok.com/f/287543645078635/1800x2592/50353316bc/110925_molo_l_b_p_67_0063.jpg/m/3840x0/filters:quality(75)",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"}
-    ]
-  },
-  {
-    fecha:"2026-08-03",label:"03 de agosto, 2026",
-    marcas:["Mini Rodini","Molo"],
-    resumen:"Mini Rodini lanza gráficos neón sobre base oscura. Tendencia de camisetas print all-over con mensajes positivos.",
-    fotos:[
-      {codigo:"BK-0803-CT01",nombre:"Neon Print Negro",categoria:"Camisetas",descripcion:"Camiseta negro con print all-over neón (amarillo/naranja), jersey 190g. Impacto visual alto. Tallas 80-140.",urgencia:"Alta",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/7a4fa39dfd/3-63.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
-      {codigo:"BK-0803-BZ01",nombre:"Message Hoodie Negro",categoria:"Buzos",descripcion:"Hoodie negro con mensaje GOOD ENERGY estampado en letras blancas, oversized. Tallas 80-140.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
-      {codigo:"BK-0803-CJ01",nombre:"Track Jacket Neón",categoria:"Chaquetas",descripcion:"Track jacket negro con rayas laterales neón verde/amarillo, corte athletic. Tallas 80-140.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254CHAR-PETAL-1-G.jpg",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
-      {codigo:"BK-0803-PT01",nombre:"Track Pants Coordinados",categoria:"Pantalones",descripcion:"Pantalón jogger coordinado track jacket, rayas neón, puños elásticos. Tallas 80-140.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC860SSDD-INDIGO-1-G.jpg",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
-      {codigo:"BK-0803-AB01",nombre:"Softshell Negro",categoria:"Abrigos",descripcion:"Cortaviento softshell negro, resistente agua, serigrafía logo pecho, capucha desmontable. Tallas 2-14.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1200x1002/c6e150a431/molo_21sep_2025_scan_1165_ws1_work_argb_low.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"}
-    ]
-  },
-  {
-    fecha:"2026-08-02",label:"02 de agosto, 2026",
-    marcas:["Bobo Choses","Rylee + Cru"],
-    resumen:"Inicio de semana con foco en colecciones capsule resort-to-fall. Lino premium y algodón orgánico dominan.",
-    fotos:[
-      {codigo:"BK-0802-BL01",nombre:"Linen Camp Collar",categoria:"Blusas",descripcion:"Camisa camp collar lino crudo, manga corta, bolsillo pecho. Versión unisex. Tallas 2-11.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7592_6W26I104_5959_A-original.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
-      {codigo:"BK-0802-VD01",nombre:"Tiered Maxi Terracota",categoria:"Vestidos",descripcion:"Vestido maxi con capas en gasa terracota, tirantes finos, largo tobillo. Tallas 2-11.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254MDMN-MIDNIGHT-1-G.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
-      {codigo:"BK-0802-CO01",nombre:"Resort Set Blanco",categoria:"Conjuntos",descripcion:"Conjunto lino blanco óptico: top sin mangas + short wide. Acabado artesanal. Tallas 2-10.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/f15af0bd319f4e099249ecf67b5cd571.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0802-CT01",nombre:"Organic Tee Off-White",categoria:"Camisetas",descripcion:"Camiseta manga corta off-white, algodón orgánico Oeko-Tex, fit relajado, cuello ligeramente ancho. Tallas 2-14.",urgencia:"Baja",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC599MENT-MIDNIGHT-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
-      {codigo:"BK-0802-PT01",nombre:"Linen Short Terracota",categoria:"Pantalones",descripcion:"Short lino terracota, cintura elástica, largo a la rodilla. Bolsillos laterales. Tallas 2-10.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC907NDRE-ROSEWOOD-1-G.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
-      {codigo:"BK-0802-BZ01",nombre:"Sun Sweat Naranja",categoria:"Buzos",descripcion:"Buzo pullover naranja quemado con sol bordado, manga larga, cuello redondo. Orgánico. Tallas 2-11.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"}
-    ]
-  }
-  // <- EL AGENTE INSERTA NUEVOS DIAS AQUI ARRIBA, ANTES DE ESTE COMENTARIO
+  {fecha:"2026-08-08",label:"08 de agosto, 2026",marcas:["Molo","Rylee + Cru"],resumen:"Paleta neutro-terrosa: oliva, camel, crema. Matching sets y varsity collegiate lideran colecciones premium.",fotos:[
+    {codigo:"BK-0808-CJ01",nombre:"Varsity Olive",categoria:"Chaquetas",descripcion:"Chaqueta varsity punto grueso oliva militar, ribetes crema en cuello y punos, silueta relaxed. French terry 300g. Tallas 2-12.",urgencia:"Alta",imagen:"https://molo.centracdn.net/client/dynamic/originals/7253_1W26A304_5933_A-original.jpg",fuente:"https://www.molo.com",marca:"Molo"},
+    {codigo:"BK-0808-CJ02",nombre:"Bomber Camel",categoria:"Chaquetas",descripcion:"Bomber oversize algodon satinado camel, punos y cintura elasticos negro, bolsillos cremallera. Tallas 2-12.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254CHAR-PETAL-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0808-BZ01",nombre:"Collegiate Cream",categoria:"Buzos",descripcion:"Hoodie oversize crema roto, aplique 3D pecho, dropped shoulder, interior afelpado. Tallas 2-14.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC714SSDD-INDIGO-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0808-BZ02",nombre:"Urban Borgona",categoria:"Buzos",descripcion:"Buzo cuello redondo fleece suave borgona, punos y cintura acanalados. Tallas 2-14.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://www.molo.com",marca:"Molo"},
+    {codigo:"BK-0808-CT01",nombre:"Graphic Neutral",categoria:"Camisetas",descripcion:"Camiseta oversize jersey 180g gris ceniza, ilustracion minimal linea en pecho. Tallas 2-14.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/7a4fa39dfd/3-63.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
+    {codigo:"BK-0808-CT02",nombre:"Longsleeve Stripe",categoria:"Camisetas",descripcion:"Camiseta manga larga rayas finas camel y crema, algodon pima 200g. Tallas 2-12.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC599MENT-MIDNIGHT-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0808-CO01",nombre:"Matching Set Oliva",categoria:"Conjuntos",descripcion:"Conjunto buzo + pantalon cargo french terry oliva. Bolsillos funcionales, cintura elastica. Tallas 2-12.",urgencia:"Alta",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/bc25e25a1e/3-64.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
+    {codigo:"BK-0808-CO02",nombre:"Set Gris Premium",categoria:"Conjuntos",descripcion:"Conjunto camiseta + short jersey gris marengo. Costuras planas, cintura ajustable. Tallas 2-10.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/f15af0bd319f4e099249ecf67b5cd571.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0808-PT01",nombre:"Cargo Camel",categoria:"Pantalones",descripcion:"Pantalon cargo twill algodon 240g camel, 6 bolsillos, cintura elastica, bota wide. Tallas 2-14.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC860SSDD-INDIGO-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0808-PT02",nombre:"Jogger Crema",categoria:"Pantalones",descripcion:"Jogger fleece suave crema roto, punos acanalados, cordon en cintura. Tallas 2-14.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC907NDRE-ROSEWOOD-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0808-AB01",nombre:"Overcoat Camel",categoria:"Abrigos",descripcion:"Abrigo overcoat mezcla lana camel, corte recto structured, botones dorados, solapa ancha. Tallas 4-14.",urgencia:"Alta",imagen:"https://a.storyblok.com/f/287543645078635/1800x2592/50353316bc/110925_molo_l_b_p_67_0063.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
+    {codigo:"BK-0808-AB02",nombre:"Puffer Urban Negro",categoria:"Abrigos",descripcion:"Puffer corto nylon reciclado negro, capucha desmontable, bolsillos cremallera. Tallas 2-14.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1200x1002/c6e150a431/molo_21sep_2025_scan_1165_ws1_work_argb_low.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
+    {codigo:"BK-0808-VD01",nombre:"Midi Dusty Rose",categoria:"Vestidos",descripcion:"Vestido midi corduroy fino dusty rose, silueta A, mangas largas con puno. Tallas 2-12.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC869FFDS-MULBERRY-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0808-VD02",nombre:"Smock Crema",categoria:"Vestidos",descripcion:"Vestido smocked algodon organico crema, bordado tonal pecho. Tallas 2-12.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254MDMN-MIDNIGHT-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0808-BL01",nombre:"Linen Oliva",categoria:"Blusas",descripcion:"Blusa oversize lino natural oliva, cuello mao botones nacar, mangas anchas. Tallas 4-14.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7592_6W26I104_5959_A-original.jpg",fuente:"https://www.molo.com",marca:"Molo"},
+    {codigo:"BK-0808-BL02",nombre:"Puff Sleeve Crema",categoria:"Blusas",descripcion:"Blusa mangas abullonadas popelin crema, cuello redondo, largo cadera. Tallas 4-14.",urgencia:"Baja",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254CHAR-PETAL-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"}
+  ]},
+  {fecha:"2026-08-07",label:"07 de agosto, 2026",marcas:["Mini Rodini","Bobo Choses"],resumen:"Mini Rodini destaca con graficos bold animales en tonos tierra. Bobo Choses lidera en vestidos bordados y conjuntos artisticos.",fotos:[
+    {codigo:"BK-0807-CJ01",nombre:"Animal Print Olive",categoria:"Chaquetas",descripcion:"Chaqueta acolchada ligera print osos polares en oliva oscuro. Relleno reciclado 90g. Tallas 80-140.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC860SSDD-INDIGO-1-G.jpg",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
+    {codigo:"BK-0807-BZ01",nombre:"Fox Fleece Terracota",categoria:"Buzos",descripcion:"Hoodie fleece terracota con bordado zorro en pecho, interior cepillado. Tallas 80-140.",urgencia:"Alta",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
+    {codigo:"BK-0807-CT01",nombre:"Doodle Crema Bold",categoria:"Camisetas",descripcion:"Longsleeve crema con doodle artistico multicolor todo-over. Tallas 2-11.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/7a4fa39dfd/3-63.jpg/m/3840x0/filters:quality(75)",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
+    {codigo:"BK-0807-VD01",nombre:"Sun Embroidery Azul",categoria:"Vestidos",descripcion:"Vestido midi azul marino con sol bordado en pecho, faldon recto. Algodon popelin. Tallas 2-11.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC869FFDS-MULBERRY-1-G.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
+    {codigo:"BK-0807-CO01",nombre:"Art Set Marron",categoria:"Conjuntos",descripcion:"Conjunto pantalon + camiseta algodon marron calido, serigrafia abstracta pecho. Tallas 2-10.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/bc25e25a1e/3-64.jpg/m/3840x0/filters:quality(75)",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
+    {codigo:"BK-0807-PT01",nombre:"Wide Leg Musgo",categoria:"Pantalones",descripcion:"Pantalon wide leg lino-algodon musgo, cintura alta con elastico, pernera ancha. Tallas 2-11.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC907NDRE-ROSEWOOD-1-G.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
+    {codigo:"BK-0807-AB01",nombre:"Puffer Patch Azul",categoria:"Abrigos",descripcion:"Puffer ligero azul marino con parches bordados, cremallera YKK, capucha fixed. Tallas 80-140.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1800x2592/50353316bc/110925_molo_l_b_p_67_0063.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
+    {codigo:"BK-0807-BL01",nombre:"Stripe Linen Azul",categoria:"Blusas",descripcion:"Blusa rayas azul y blanco, lino 100%, manga globo, botones frontales. Tallas 4-11.",urgencia:"Baja",imagen:"https://molo.centracdn.net/client/dynamic/originals/7592_6W26I104_5959_A-original.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"}
+  ]},
+  {fecha:"2026-08-06",label:"06 de agosto, 2026",marcas:["Molo","Mini Rodini"],resumen:"Tonos otoñales en pre-coleccion: burdeos, mostaza y verde pino. Siluetas oversized dominan.",fotos:[
+    {codigo:"BK-0806-BZ01",nombre:"Hoodie Burdeos",categoria:"Buzos",descripcion:"Hoodie oversized burdeos con bolsillo canguro. Fleece 380g. Tallas 2-14.",urgencia:"Alta",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://www.molo.com",marca:"Molo"},
+    {codigo:"BK-0806-CT01",nombre:"Graphic Mostaza",categoria:"Camisetas",descripcion:"Camiseta mostaza ilustracion vintage skateboard, jersey ring-spun 190g. Tallas 2-14.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/7a4fa39dfd/3-63.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
+    {codigo:"BK-0806-CJ01",nombre:"Wind Jacket Pino",categoria:"Chaquetas",descripcion:"Cortaviento verde pino nylon ripstop, capucha integrada, empaque en bolsillo. Tallas 2-12.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254CHAR-PETAL-1-G.jpg",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
+    {codigo:"BK-0806-PT01",nombre:"Jogger Mostaza",categoria:"Pantalones",descripcion:"Jogger fleece mostaza, bolsillos laterales, punos acanalados. Tallas 2-12.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC860SSDD-INDIGO-1-G.jpg",fuente:"https://www.molo.com",marca:"Molo"},
+    {codigo:"BK-0806-CO01",nombre:"Matching Pino",categoria:"Conjuntos",descripcion:"Conjunto buzo pullover + jogger en verde pino. Tallas 2-10.",urgencia:"Alta",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/bc25e25a1e/3-64.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
+    {codigo:"BK-0806-VD01",nombre:"Pinafore Burdeos",categoria:"Vestidos",descripcion:"Pinafore pana fina burdeos, tirantes anchos, bolsillos delanteros. Tallas 2-12.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC869FFDS-MULBERRY-1-G.jpg",fuente:"https://www.molo.com",marca:"Molo"}
+  ]},
+  {fecha:"2026-08-05",label:"05 de agosto, 2026",marcas:["Rylee + Cru","Bobo Choses"],resumen:"Soft neutrals para transicion: beige arena, gris perla y blanco hueso. Prints florales abstractos.",fotos:[
+    {codigo:"BK-0805-BL01",nombre:"Floral Blusa Hueso",categoria:"Blusas",descripcion:"Blusa hueso con print floral abstracto acuarela, mangas plisadas. Tallas 4-12.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7592_6W26I104_5959_A-original.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0805-VD01",nombre:"Prairie Dress Arena",categoria:"Vestidos",descripcion:"Vestido largo arena algodon lavado, escote cuadrado, botones frontales. Tallas 2-12.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254MDMN-MIDNIGHT-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0805-CT01",nombre:"Long Sleeve Gris",categoria:"Camisetas",descripcion:"Longsleeve gris perla con micro-print todo-over. Tallas 2-12.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC599MENT-MIDNIGHT-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0805-CO01",nombre:"Linen Set Beige",categoria:"Conjuntos",descripcion:"Conjunto camisa + short en lino arena, cuello camp collar. Tallas 2-10.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/f15af0bd319f4e099249ecf67b5cd571.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
+    {codigo:"BK-0805-PT01",nombre:"Linen Trousers Beige",categoria:"Pantalones",descripcion:"Pantalon lino beige arena, corte relaxed, cintura elastica con cordon. Tallas 2-11.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC907NDRE-ROSEWOOD-1-G.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
+    {codigo:"BK-0805-BZ01",nombre:"Oversized Gris Perla",categoria:"Buzos",descripcion:"Buzo crewneck gris perla oversized, costuras visibles en contraste arena. Tallas 2-14.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"}
+  ]},
+  {fecha:"2026-08-04",label:"04 de agosto, 2026",marcas:["Molo","Rylee + Cru"],resumen:"Prendas con textura: pana, corduroy y punto grueso. Colores joya: azul safiro y verde esmeralda.",fotos:[
+    {codigo:"BK-0804-CJ01",nombre:"Cord Jacket Safiro",categoria:"Chaquetas",descripcion:"Chaqueta corduroy ancho azul safiro, forro micropolar, botones metalicos. Tallas 2-12.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254CHAR-PETAL-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0804-PT01",nombre:"Corduroy Esmeralda",categoria:"Pantalones",descripcion:"Pantalon corduroy fino verde esmeralda, corte slim relajado. Tallas 2-14.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC860SSDD-INDIGO-1-G.jpg",fuente:"https://www.molo.com",marca:"Molo"},
+    {codigo:"BK-0804-BZ01",nombre:"Knit Safiro Textura",categoria:"Buzos",descripcion:"Sueter punto grueso azul safiro, cuello alto, mangas amplias. Merino blend. Tallas 2-12.",urgencia:"Alta",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://www.molo.com",marca:"Molo"},
+    {codigo:"BK-0804-VD01",nombre:"Cord Dress Esmeralda",categoria:"Vestidos",descripcion:"Vestido pana fina esmeralda, manga larga, cinturon tela mismo material. Tallas 2-12.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC869FFDS-MULBERRY-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0804-CO01",nombre:"Knit Set Camel",categoria:"Conjuntos",descripcion:"Conjunto sueter punto + pantalon punto camel, textura trenzada. Tallas 4-12.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/bc25e25a1e/3-64.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"},
+    {codigo:"BK-0804-AB01",nombre:"Teddy Coat Crema",categoria:"Abrigos",descripcion:"Abrigo teddy faux fur crema, corte oversized, bolsillos de parche. Tallas 4-14.",urgencia:"Alta",imagen:"https://a.storyblok.com/f/287543645078635/1800x2592/50353316bc/110925_molo_l_b_p_67_0063.jpg/m/3840x0/filters:quality(75)",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"}
+  ]},
+  {fecha:"2026-08-03",label:"03 de agosto, 2026",marcas:["Mini Rodini","Molo"],resumen:"Mini Rodini lanza graficos neon sobre base oscura. Print all-over con mensajes positivos.",fotos:[
+    {codigo:"BK-0803-CT01",nombre:"Neon Print Negro",categoria:"Camisetas",descripcion:"Camiseta negro con print all-over neon, jersey 190g. Impacto visual alto. Tallas 80-140.",urgencia:"Alta",imagen:"https://a.storyblok.com/f/287543645078635/1080x1350/7a4fa39dfd/3-63.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
+    {codigo:"BK-0803-BZ01",nombre:"Message Hoodie Negro",categoria:"Buzos",descripcion:"Hoodie negro GOOD ENERGY estampado en letras blancas, oversized. Tallas 80-140.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
+    {codigo:"BK-0803-CJ01",nombre:"Track Jacket Neon",categoria:"Chaquetas",descripcion:"Track jacket negro con rayas laterales neon verde/amarillo, corte athletic. Tallas 80-140.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254CHAR-PETAL-1-G.jpg",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
+    {codigo:"BK-0803-PT01",nombre:"Track Pants Coordinados",categoria:"Pantalones",descripcion:"Pantalon jogger coordinado track jacket, rayas neon, punos elasticos. Tallas 80-140.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC860SSDD-INDIGO-1-G.jpg",fuente:"https://www.minirodini.com",marca:"Mini Rodini"},
+    {codigo:"BK-0803-AB01",nombre:"Softshell Negro",categoria:"Abrigos",descripcion:"Cortaviento softshell negro, resistente agua, serigrafia logo pecho. Tallas 2-14.",urgencia:"Media",imagen:"https://a.storyblok.com/f/287543645078635/1200x1002/c6e150a431/molo_21sep_2025_scan_1165_ws1_work_argb_low.jpg/m/3840x0/filters:quality(75)",fuente:"https://www.molo.com",marca:"Molo"}
+  ]},
+  {fecha:"2026-08-02",label:"02 de agosto, 2026",marcas:["Bobo Choses","Rylee + Cru"],resumen:"Inicio de semana con capsule resort-to-fall. Lino premium y algodon organico dominan.",fotos:[
+    {codigo:"BK-0802-BL01",nombre:"Linen Camp Collar",categoria:"Blusas",descripcion:"Camisa camp collar lino crudo, manga corta, bolsillo pecho. Tallas 2-11.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7592_6W26I104_5959_A-original.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
+    {codigo:"BK-0802-VD01",nombre:"Tiered Maxi Terracota",categoria:"Vestidos",descripcion:"Vestido maxi con capas en gasa terracota, tirantes finos, largo tobillo. Tallas 2-11.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RCA254MDMN-MIDNIGHT-1-G.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
+    {codigo:"BK-0802-CO01",nombre:"Resort Set Blanco",categoria:"Conjuntos",descripcion:"Conjunto lino blanco optico: top sin mangas + short wide. Acabado artesanal. Tallas 2-10.",urgencia:"Alta",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/f15af0bd319f4e099249ecf67b5cd571.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0802-CT01",nombre:"Organic Tee Off-White",categoria:"Camisetas",descripcion:"Camiseta manga corta off-white, algodon organico Oeko-Tex, fit relajado. Tallas 2-14.",urgencia:"Baja",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC599MENT-MIDNIGHT-1-G.jpg",fuente:"https://ryleeandcru.com",marca:"Rylee + Cru"},
+    {codigo:"BK-0802-PT01",nombre:"Linen Short Terracota",categoria:"Pantalones",descripcion:"Short lino terracota, cintura elastica, largo a la rodilla. Tallas 2-10.",urgencia:"Media",imagen:"https://cdn.shopify.com/s/files/1/0676/3685/files/RC907NDRE-ROSEWOOD-1-G.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"},
+    {codigo:"BK-0802-BZ01",nombre:"Sun Sweat Naranja",categoria:"Buzos",descripcion:"Buzo pullover naranja quemado con sol bordado, manga larga. Organico. Tallas 2-11.",urgencia:"Media",imagen:"https://molo.centracdn.net/client/dynamic/originals/7256_1W26A407_9797_A-original.jpg",fuente:"https://bobochoses.com",marca:"Bobo Choses"}
+  ]}
+  // <- EL AGENTE INSERTA NUEVOS DIAS AQUI ARRIBA
 ];
-
-// ─── FEEDBACK (localStorage) ─────────────────────────────────────────
-const FB_KEY='bk_feedback_v1';
-function loadFeedback(){try{return JSON.parse(localStorage.getItem(FB_KEY)||'{}')}catch{return{}}}
-function saveFeedback(fb){localStorage.setItem(FB_KEY,JSON.stringify(fb))}
-function setFeedback(codigo,val){
-  const fb=loadFeedback();
-  if(fb[codigo]===val){delete fb[codigo]}else{fb[codigo]=val}
-  saveFeedback(fb);
-  renderBoard();updateStats();
-}
-function getFeedback(codigo){return loadFeedback()[codigo]||null}
-
-// ─── STATE ────────────────────────────────────────────────────────────
-let activeCat='all',activeUrg='all',onlyLikes=false;
-let openCodigo=null;
-
-// ─── STATS ────────────────────────────────────────────────────────────
-function updateStats(){
-  const fb=loadFeedback();
-  const likes=Object.values(fb).filter(v=>v==='like').length;
-  const dislikes=Object.values(fb).filter(v=>v==='dislike').length;
-  document.getElementById('badge-likes').textContent='❤️ '+likes;
-  
-  const allFotos=DAYS.flatMap(d=>d.fotos);
-  document.getElementById('badge-total').textContent=allFotos.length+' referencias';
-  
-  // week stats
-  const cats={};
-  allFotos.forEach(f=>{if(fb[f.codigo]==='like'){cats[f.categoria]=(cats[f.categoria]||0)+1}});
-  const topCats=Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,4);
-  const ws=document.getElementById('week-stats');
-  ws.innerHTML=`
-    <div class="stat-item"><div class="stat-label">Total semana</div><div class="stat-val">${allFotos.length}</div><div class="stat-sub">referencias</div></div>
-    <div class="stat-item"><div class="stat-label">Me gusta</div><div class="stat-val" style="color:var(--like)">${likes}</div><div class="stat-sub">marcadas</div></div>
-    <div class="stat-item"><div class="stat-label">No gusta</div><div class="stat-val" style="color:#555">${dislikes}</div><div class="stat-sub">descartadas</div></div>
-    ${topCats.map(([cat,n])=>`<div class="stat-item"><div class="stat-label">Top</div><div class="stat-val" style="font-size:13px;padding-top:4px">${cat}</div><div class="stat-sub">❤️ ${n} gustos</div></div>`).join('')}
-  `;
-}
-
-// ─── RENDER ───────────────────────────────────────────────────────────
-const chipCls=u=>u==='Alta'?'chip-alta':u==='Media'?'chip-media':'chip-baja';
-const isToday=f=>f===new Date().toISOString().slice(0,10);
-
-function renderBoard(){
-  const fb=loadFeedback();
-  const board=document.getElementById('board');
-  board.innerHTML=DAYS.map((day,di)=>{
-    let fotos=day.fotos.filter(f=>(activeCat==='all'||f.categoria===activeCat)&&(activeUrg==='all'||f.urgencia===activeUrg));
-    if(onlyLikes)fotos=fotos.filter(f=>fb[f.codigo]==='like');
-    if(!fotos.length)return '';
-    const nuevo=isToday(day.fecha)&&di===0;
-    const cards=fotos.map(f=>{
-      const fbVal=fb[f.codigo];
-      const likedCls=fbVal==='like'?'liked':fbVal==='dislike'?'disliked':'';
-      return `<div class="photo-card ${likedCls}" id="card-${f.codigo}" onclick="openMod('${f.codigo}')">
-        <span class="source-badge">${f.marca}</span>
-        <img src="${f.imagen}" alt="${f.nombre}" loading="lazy" onerror="this.style.display='none'">
-        <div class="fb-btns">
-          <button class="fb-btn fb-like ${fbVal==='like'?'active':''}" onclick="event.stopPropagation();setFeedback('${f.codigo}','like')" title="Me gusta">❤️</button>
-          <button class="fb-btn fb-dis ${fbVal==='dislike'?'active':''}" onclick="event.stopPropagation();setFeedback('${f.codigo}','dislike')" title="No gusta">👎</button>
-        </div>
-        <div class="photo-overlay">
-          <span class="ov-chip ${chipCls(f.urgencia)}">${f.urgencia}</span>
-          <div class="ov-name">${f.nombre}</div>
-          <div class="ov-cat">${f.categoria} · ${f.codigo}</div>
-          <div class="ov-actions">
-            <a class="ov-btn dl" href="${f.imagen}" download="${f.codigo}.jpg" target="_blank" onclick="event.stopPropagation()">⬇ Descargar</a>
-            <button class="ov-btn" onclick="event.stopPropagation();openMod('${f.codigo}')">Ver detalle</button>
-          </div>
-        </div>
-        <div class="like-indicator"></div>
-      </div>`;
-    }).join('');
-    return `<div class="date-section"><div class="date-label"><span>${day.label}</span>${nuevo?'<span class="new-pill">HOY</span>':''}</div><div class="brand-info">Marcas: ${day.marcas.join(' · ')} &nbsp;·&nbsp; ${day.resumen.substring(0,120)}...</div></div><div class="photo-grid">${cards}</div>`;
-  }).join('');
-  if(!board.innerHTML.trim())board.innerHTML='<div class="empty">Sin resultados para este filtro</div>';
-  updateStats();
-}
-
-// ─── MODAL ───────────────────────────────────────────────────────────
-function openMod(codigo){
-  const f=DAYS.flatMap(d=>d.fotos).find(x=>x.codigo===codigo);
-  if(!f)return;
-  openCodigo=codigo;
-  document.getElementById('m-img').src=f.imagen;
-  document.getElementById('m-code').textContent=f.codigo;
-  document.getElementById('m-name').textContent=f.nombre;
-  document.getElementById('m-brand').textContent=f.marca+' · '+f.categoria;
-  document.getElementById('m-cat').textContent=f.urgencia+' urgencia';
-  document.getElementById('m-desc').textContent=f.descripcion;
-  document.getElementById('m-src').textContent=f.fuente;
-  document.getElementById('m-src').href=f.fuente;
-  document.getElementById('m-src-btn').href=f.fuente;
-  document.getElementById('m-dl').href=f.imagen;
-  refreshModalFb();
-  document.getElementById('modal-bg').classList.add('open');
-}
-function refreshModalFb(){
-  if(!openCodigo)return;
-  const fb=loadFeedback();
-  const val=fb[openCodigo];
-  document.getElementById('mfb-like').className='modal-fb-btn mfb-like'+(val==='like'?' active':'');
-  document.getElementById('mfb-dis').className='modal-fb-btn mfb-dis'+(val==='dislike'?' active':'');
-}
-function modalFb(val){setFeedback(openCodigo,val);refreshModalFb()}
-function closeMod(){document.getElementById('modal-bg').classList.remove('open');openCodigo=null}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMod()});
-
-// ─── FILTER EVENTS ───────────────────────────────────────────────────
-document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));
-  b.classList.add('on');activeCat=b.dataset.cat;renderBoard();
-}));
-document.querySelectorAll('.ubtn').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.ubtn').forEach(x=>x.classList.remove('on'));
-  b.classList.add('on');activeUrg=b.dataset.u;renderBoard();
-}));
-document.getElementById('like-filter-btn').addEventListener('click',function(){
-  onlyLikes=!onlyLikes;
-  this.classList.toggle('on',onlyLikes);
-  renderBoard();
-});
-
-// ─── INIT ─────────────────────────────────────────────────────────────
-renderBoard();
+const FB_KEY='bk_fb_v2';
+const loadFB=()=>{try{return JSON.parse(localStorage.getItem(FB_KEY)||'{}')}catch{return{}}};
+const saveFB=fb=>localStorage.setItem(FB_KEY,JSON.stringify(fb));
+function setFB(c,v){const fb=loadFB();fb[c]===v?delete fb[c]:(fb[c]=v);saveFB(fb);render();updateCounts();}
+let activeCat='all',activeUrg='all',onlyLikes=false,openId=null;
+function filtered(){const fb=loadFB();return DAYS.map(d=>({...d,fotos:d.fotos.filter(f=>{if(activeCat!=='all'&&f.categoria!==activeCat)return false;if(activeUrg!=='all'&&f.urgencia!==activeUrg)return false;if(onlyLikes&&fb[f.codigo]!=='like')return false;return true;})})).filter(d=>d.fotos.length>0);}
+const isToday=d=>d===new Date().toISOString().slice(0,10);
+function cardHTML(f,fb){const v=fb[f.codigo];const lc=v==='like'?'liked':v==='dislike'?'disliked':'';const uc=f.urgencia==='Alta'?'alta':'media';return `<div class="ed-card ${lc}" id="edc-${f.codigo}" onclick="openMod('${f.codigo}')"><img src="${f.imagen}" alt="${f.nombre}" loading="lazy"><span class="card-urgency ${uc}">${f.urgencia}</span><div class="card-fb"><button class="fb-pill ${v==='like'?'like-active':''}" onclick="event.stopPropagation();setFB('${f.codigo}','like')">&#x2764;</button><button class="fb-pill ${v==='dislike'?'dis-active':''}" onclick="event.stopPropagation();setFB('${f.codigo}','dislike')">&#x1F44E;</button></div><div class="card-overlay"><div class="overlay-actions"><a class="ov-pill dl" href="${f.imagen}" download="${f.codigo}.jpg" target="_blank" onclick="event.stopPropagation()">Descargar</a><button class="ov-pill" onclick="event.stopPropagation();openMod('${f.codigo}')">Detalle</button></div></div><div class="card-label"><span class="card-label-cat">${f.categoria}</span><span class="card-label-name">${f.nombre}</span><span class="card-label-marca">${f.marca}</span></div></div>`;}
+function render(){const fb=loadFB();const days=filtered();const board=document.getElementById('main-board');if(!days.length){board.innerHTML='<div class="no-results">Sin referencias para este filtro.</div>';return;}let html='';days.forEach((day,di)=>{const fotos=day.fotos;const today=isToday(day.fecha)&&di===0;html+=`<div class="day-header"><span class="day-date">${day.label}</span><span class="day-brands">${day.marcas.join(' &middot; ')}</span>${today?'<span class="day-new">Hoy</span>':''}</div><div class="day-summary">${day.resumen}</div>`;let i=0,bi=0;while(i<fotos.length){if(bi%3===2){html+=`<div class="editorial-block block-solo">${cardHTML(fotos[i],fb)}</div>`;i+=1;}else if(i+1<fotos.length){html+=`<div class="editorial-block block-duo">${cardHTML(fotos[i],fb)}${cardHTML(fotos[i+1],fb)}</div>`;i+=2;}else{html+=`<div class="editorial-block block-solo">${cardHTML(fotos[i],fb)}</div>`;i+=1;}bi++;}if(di<days.length-1)html+='<div class="day-sep"></div>';});board.innerHTML=html;updateCounts();}
+function updateCounts(){const fb=loadFB();const all=DAYS.flatMap(d=>d.fotos);const likes=Object.values(fb).filter(v=>v==='like').length;const dislikes=Object.values(fb).filter(v=>v==='dislike').length;document.getElementById('hdr-likes').textContent=likes>0?'❤️ '+likes:'';document.getElementById('hdr-total').textContent=all.length+' ref';document.getElementById('footer-date').textContent=DAYS[0]?.label||'';['all','Chaquetas','Buzos','Camisetas','Conjuntos','Pantalones','Abrigos','Vestidos','Blusas'].forEach(c=>{const el=document.getElementById('cnt-'+c);if(el)el.textContent=c==='all'?all.length:all.filter(f=>f.categoria===c).length;});const cl={};all.forEach(f=>{if(fb[f.codigo]==='like')cl[f.categoria]=(cl[f.categoria]||0)+1;});const top=Object.entries(cl).sort((a,b)=>b[1]-a[1]);document.getElementById('menu-stats-body').innerHTML=`<div class="stat-row"><span class="stat-name">Total</span><span class="stat-val">${all.length}</span></div><div class="stat-row"><span class="stat-name">Me gusta</span><span class="stat-val" style="color:var(--like)">${likes}</span></div><div class="stat-row"><span class="stat-name">No gusta</span><span class="stat-val" style="color:#999">${dislikes}</span></div>${top.slice(0,3).map(([c,n])=>`<div class="stat-row"><span class="stat-name">${c}</span><span class="stat-val" style="font-size:14px">❤️ ${n}</span></div>`).join('')}`;}
+function openMod(c){const f=DAYS.flatMap(d=>d.fotos).find(x=>x.codigo===c);if(!f)return;openId=c;document.getElementById('m-img').src=f.imagen;document.getElementById('m-code').textContent=f.codigo;document.getElementById('m-name').textContent=f.nombre;document.getElementById('m-brand').textContent=f.marca;document.getElementById('m-cat').textContent=f.categoria;document.getElementById('m-urg').textContent=f.urgencia+' urgencia';document.getElementById('m-desc').textContent=f.descripcion;document.getElementById('m-src').textContent=f.fuente.replace('https://','');document.getElementById('m-src').href=f.fuente;document.getElementById('m-src-btn').href=f.fuente;document.getElementById('m-dl').href=f.imagen;refreshFB();document.getElementById('modal-bg').classList.add('open');}
+function refreshFB(){const v=loadFB()[openId];document.getElementById('mfb-like').className='modal-fb-btn'+(v==='like'?' like-on':'');document.getElementById('mfb-dis').className='modal-fb-btn'+(v==='dislike'?' dis-on':'');}
+function modalFb(v){setFB(openId,v);refreshFB();}
+function closeMod(){document.getElementById('modal-bg').classList.remove('open');openId=null;}
+function openMenu(){document.getElementById('side-menu').classList.add('open');document.getElementById('menu-overlay').classList.add('open');}
+function closeMenu(){document.getElementById('side-menu').classList.remove('open');document.getElementById('menu-overlay').classList.remove('open');}
+document.getElementById('menu-btn').addEventListener('click',openMenu);
+document.querySelectorAll('#cat-menu .menu-item').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#cat-menu .menu-item').forEach(x=>x.classList.remove('active'));b.classList.add('active');activeCat=b.dataset.cat;render();closeMenu();}));
+document.querySelectorAll('.urg-chip').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.urg-chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');activeUrg=b.dataset.u;render();}));
+document.getElementById('likes-toggle').addEventListener('click',function(){onlyLikes=!onlyLikes;this.classList.toggle('on',onlyLikes);render();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMod();closeMenu();}});
+render();
 </script>
 </body>
 </html>
